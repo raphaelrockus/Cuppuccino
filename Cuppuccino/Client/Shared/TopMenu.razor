@@ -1,0 +1,23 @@
+﻿@*@inject IMoneyService MoneyService
+@implements IDisposable
+
+<div class="top-menu">
+    <img src="icons/euro.png" />
+    <span class="popover-header">
+    @MoneyService.Money
+    </span>
+    <AddMoney />
+</div>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        MoneyService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        MoneyService.OnChange -= StateHasChanged;
+    }
+}*@

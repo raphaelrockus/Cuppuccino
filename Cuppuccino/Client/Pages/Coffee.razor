@@ -1,0 +1,49 @@
+﻿@page "/Order"
+@inject IMoneyService MoneyService
+@inject ICoffeeService CoffeeService
+
+
+<h3>Buy Coffee</h3>
+
+<div class="form-group">
+    <select @bind="selectedCoffeeId" class="form-control">
+        @foreach (var coffee in CoffeeService.Coffees)
+        {
+            <option value="@coffee.Id">@coffee.Name // @coffee.Cost euros</option>
+        }
+    </select>
+</div>
+
+<button class="btn btn-primary" @onclick="BuildUnit">Order Coffee</button>
+
+
+@if (needMoreMoney)
+{
+    <div class="validation-message">
+        Not enough money! :-(
+    </div>
+}
+
+
+@code {
+    int selectedCoffeeId = 1;
+
+    bool needMoreMoney = false;
+
+    public void BuildUnit()
+    {
+        var selectedCoffee = CoffeeService.Coffees.FirstOrDefault(unit => unit.Id == selectedCoffeeId);
+
+        if (MoneyService.Money < selectedCoffee.Cost)
+        {
+            needMoreMoney = true;
+            return;
+        }
+
+        needMoreMoney = false;
+
+        MoneyService.SpendMoney(selectedCoffee.Cost);
+        CoffeeService.AddCoffee(selectedCoffeeId);
+    }
+
+}

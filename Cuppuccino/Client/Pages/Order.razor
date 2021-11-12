@@ -1,0 +1,30 @@
+﻿@page "/MyOrder"
+@inject ICoffeeService CoffeeService
+
+<h3>My Order</h3>
+
+<table class="table">
+    @foreach (var usercoffee in CoffeeService.MyCoffees)
+    {
+        <tr>
+            <td>
+                @switch (usercoffee.CoffeeId)
+                {
+                    case 1:<img src="icons/Coffee_1.png" />break;
+                    case 2: <img src="icons/Coffee_2.png" />break;
+                    case 3: <img src="icons/Expresso.png" />break;
+                    case 4: <img src="icons/Cold_Brew.png" />break;
+                    case 5: <img src="icons/Christmas_Brew.png" />break;
+                }
+            </td>
+            <td>
+                @CoffeeService.Coffees.First(coffee => coffee.Id  == usercoffee.CoffeeId).Name
+            </td>
+        </tr>
+    }
+</table>
+
+
+@code {
+
+}
